@@ -29,12 +29,14 @@ namespace DecisionTree.Data
         public void StoreData(List<string[]> lines)
         {
             StoreFeatureNames(lines[0]);
-            
-            for(int i = 1; i < lines.Count; i++)
+            string[,] idata = new string[lines.Count-1, lines[0].Length];
+
+            for (int i = 1, j = 0; i < lines.Count ; i++ , j = 0)
             {
-                int j = 0;
-                foreach (string word in lines[i]) data[i - 1, j++] = word;
+                foreach (string word in lines[i]) idata[i - 1, j++] = word;
             }
+
+            
         }
 
         private void StoreFeatureNames(string[] names)
