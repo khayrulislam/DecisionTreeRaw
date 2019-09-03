@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DecisionTree.FileRead;
+using System;
 
 namespace DecisionTree
 {
@@ -7,9 +8,10 @@ namespace DecisionTree
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            Console.ReadLine();
+            //Console.ReadLine();
 
-
+            TrainingDataReader reader = new TrainingDataReader();
+            reader.ReadDataFile(@"..\..\..\InputFile\training-weather.txt");
 
         }
     }
