@@ -82,7 +82,7 @@ namespace DecisionTree.Data
         // dataInstance are continiously changed on the featureVlaue
         public string[][] GetDataInstances(List<FeatureValuePair> featureValues)
         {
-            string[][] dataInstance = data;
+            string[][] dataInstance = this.data;
             foreach (FeatureValuePair featureValue in featureValues)
             {
                 dataInstance = GetFeatureDataWithClass(featureValue, dataInstance);

@@ -1,5 +1,6 @@
 ﻿using DecisionTree.Data;
 using DecisionTree.FileRead;
+using DecisionTree.Tree;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace DecisionTree
             reader.ReadDataFile(@"..\..\..\InputFile\training-weather.txt");
 
             TrainingData td = TrainingData.GetTrainingDataInstance;
+
+
+            DTreeGenerator dtg = new DTreeGenerator();
+            dtg.createDecisionTree();
 
 
 /*
