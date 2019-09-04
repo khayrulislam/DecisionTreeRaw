@@ -17,7 +17,12 @@ namespace DecisionTree
 
             TrainingData td = TrainingData.GetTrainingDataInstance;
 
-/*            string[][] res = td.GetDataInstances(new List<FeatureValuePair>() { new FeatureValuePair("outlook","sunny"), new FeatureValuePair("temperature", null) });
+
+/*
+            foreach (string clas in td.distinctClasses)
+            Console.WriteLine(clas);
+
+            string[][] res = td.GetDataInstances(new List<FeatureValuePair>() { new FeatureValuePair("outlook","sunny"), new FeatureValuePair("temperature", null) });
 
             for (int i = 0; i < res.Length; i++)
             {

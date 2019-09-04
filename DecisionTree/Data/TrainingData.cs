@@ -11,6 +11,8 @@ namespace DecisionTree.Data
         private List<string> featureNames = new List<string>();
         private int featureCount;
         private int dataInstance;
+        public int distinctClassCount;
+        public List<string> distinctClasses = new List<string>();
 
         private string[][] data;
 
@@ -43,6 +45,21 @@ namespace DecisionTree.Data
             }
 
             this.data = inputData;
+            StoreDistinctClasses();
+        }
+
+        private void StoreDistinctClasses()
+        {
+            HashSet<string> classList = new HashSet<string>();
+
+            foreach(string[] row in this.data)
+            {
+                classList.Add(row[row.Length-1]);
+            }
+
+            this.distinctClasses = classList.ToList();
+            this.distinctClassCount = this.distinctClasses.Count;
+            
         }
 
         // store only the feature names in a list
