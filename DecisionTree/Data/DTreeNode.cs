@@ -21,6 +21,7 @@ namespace DecisionTree.Data
             this.isLeaf = false;
             this.previousFeatures = new List<string>();
             this.previousFeatureValues = new List<FeatureValuePair>();
+            this.childrenNodes = new List<DTreeNode>();
         }
     }
 }

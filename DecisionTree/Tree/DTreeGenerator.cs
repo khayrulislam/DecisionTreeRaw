@@ -15,7 +15,7 @@ namespace DecisionTree.Tree
         {
             root = new DTreeNode();
             trainingDataInstance = TrainingData.GetTrainingDataInstance;
-            distinctClassList = trainingDataInstance.distinctClasses;
+            //distinctClassList = trainingDataInstance.distinctClasses;
         }
 
         public void createDecisionTree()
@@ -37,26 +37,37 @@ namespace DecisionTree.Tree
                 currentNode.isLeaf = true;
                 return;
             }
+           
             currentNode.spliteFeatureName = featureInfo.name;            
             currentNode.informationGain = featureInfo.informationGain;
 
+            Console.WriteLine(currentNode.spliteFeatureName);
 
-
-            foreach(string child in featureInfo.featureDistinctValueList)
+            foreach (string child in featureInfo.featureDistinctValueList)
             {
                 DTreeNode childNode = new DTreeNode();
                 childNode.spliteFeatureValue = child;
 
-                List<string> preFeatures = currentNode.previousFeatures;
+                List<string> preFeatures = currentNode.previousFeatures.ToList();
                 preFeatures.Add(currentNode.spliteFeatureName);
                 childNode.previousFeatures = preFeatures;
 
-                List<FeatureValuePair> featureValuePairs = currentNode.previousFeatureValues;
+                List<FeatureValuePair> featureValuePairs = currentNode.previousFeatureValues.ToList();
                 featureValuePairs.Add(new FeatureValuePair(currentNode.spliteFeatureName,childNode.spliteFeatureValue));
                 childNode.previousFeatureValues = featureValuePairs;
 
                 currentNode.childrenNodes.Add(childNode);
             }
+
+            /*if (featureInfo.featureRemainCount == 1)
+            {
+                foreach (DTreeNode childNode in currentNode.childrenNodes)
+                {
+                    childNode.isLeaf = true;
+                    childNode.className = featureInfo.featureValueClassMap[childNode.spliteFeatureName];
+                }
+                return;
+            }*/
 
             foreach (DTreeNode childNode in currentNode.childrenNodes)
             {
@@ -79,7 +90,7 @@ namespace DecisionTree.Tree
                 string[][] dataInstance = trainingDataInstance.GetDataInstances(previousFeatureValueList);
                 previousFeatureValueList.Clear();
 
-                FeatureInfo info = new FeatureInfo(feature, dataInstance);
+                FeatureInfo info = new FeatureInfo(feature, dataInstance,remainFeatures.Count);
                 info.Execute();
 
                 if(info.informationGain > maxInformationGain)

@@ -10,7 +10,9 @@ namespace DecisionTree.Data
         private string[][] featureDataInstance;
         public string name;
         public string className;
+        public int featureRemainCount;
         public List<string> featureDistinctValueList = new List<string>();
+        public Dictionary<string,string> featureValueClassMap = new Dictionary<string, string>();
         public double entropy;
         public double valueEntropy;
         public double informationGain;
@@ -18,10 +20,11 @@ namespace DecisionTree.Data
         private TrainingData trainingDataInstance = null;
 
 
-        public FeatureInfo(string featureName, string[][] dataInstance)
+        public FeatureInfo(string featureName, string[][] dataInstance, int featureRemain)
         {
             this.featureDataInstance = dataInstance;
             this.name = featureName;
+            this.featureRemainCount = featureRemain;
         }
 
         public void Execute()
@@ -30,8 +33,9 @@ namespace DecisionTree.Data
             this.distinctClassList = trainingDataInstance.distinctClasses;
             this.featureDistinctValueList = GetDistinctFeatureValue();
             this.entropy = calculateFeatureEntropy();
-            this.valueEntropy = calculateFeatureEntropy();
+            this.valueEntropy = calculateFeatureValueEntropy();
             this.informationGain = this.entropy - this.valueEntropy;
+            //if(this.featureRemainCount==1) 
         }
 
         // get distinct feature value for calculating entropy for every value
@@ -48,12 +52,31 @@ namespace DecisionTree.Data
                 {
                     if (row[0] == featureValue) classList.Add(row[row.Length - 1]);
                 }
+                if (this.featureRemainCount == 1) this.featureValueClassMap.Add(featureValue, GetClass(classList));
 
                 factor = (double) classList.Count / this.featureDataInstance.Length;
                 entropy += factor * calculateEntropy(classList);
                 classList.Clear();
             }
             return entropy;
+        }
+
+        private string GetClass(List<string> classList)
+        {
+            double max = 0.0;
+            string result = null;
+            List<double> classCount = GetClassCount(classList);
+
+            foreach(double count in classCount)
+            {
+                if(count > max)
+                {
+                    result = this.distinctClassList[classCount.IndexOf(count)];
+                    max = count;
+                }
+            }
+
+            return result;
         }
 
         private List<string> GetDistinctFeatureValue()
@@ -86,15 +109,16 @@ namespace DecisionTree.Data
         {
             double entropy = 0;
             double totalClass = classList.Count;
-            List<double> classCount = Enumerable.Repeat(0.0, distinctClassList.Count).ToList();
+            
+            List<double> classCount = GetClassCount(classList);
 
             if (classList.Distinct().ToList().Count > 1)
             {
-                foreach (string classValue in classList)
+                /*foreach (string classValue in classList)
                 {
                     classCount[this.distinctClassList.IndexOf(classValue)] += 1;
                 }
-
+*/
                 foreach (double singleClassCount in classCount)
                 {
                     double prob = ClassProbability(singleClassCount, totalClass);
@@ -106,6 +130,16 @@ namespace DecisionTree.Data
                 this.className = classList[0];
             }
             return entropy;
+        }
+
+        private List<double> GetClassCount(List<string> classList)
+        {
+            List<double> classCount = Enumerable.Repeat(0.0, distinctClassList.Count).ToList();
+            foreach (string classValue in classList)
+            {
+                classCount[this.distinctClassList.IndexOf(classValue)] += 1;
+            }
+            return classCount;
         }
 
         private double ClassProbability(double singleClassCount, double totalClass)
