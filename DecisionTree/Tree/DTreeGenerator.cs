@@ -20,10 +20,52 @@ namespace DecisionTree.Tree
 
         public void createDecisionTree()
         {
-            Console.WriteLine(GetSplitFeatureName(this.root));
+            //Console.WriteLine(GetSplitFeatureInfo(this.root));
+
+            generateTree(this.root);
         }
 
-        private FeatureInfo GetSplitFeatureName(DTreeNode currentNode)
+        private void generateTree(DTreeNode currentNode)
+        {
+            FeatureInfo featureInfo = GetSplitFeatureInfo(currentNode);
+
+            currentNode.entropy = featureInfo.entropy;
+
+            if(currentNode.entropy == 0.0)
+            {
+                currentNode.className = featureInfo.className;
+                currentNode.isLeaf = true;
+                return;
+            }
+            currentNode.spliteFeatureName = featureInfo.name;            
+            currentNode.informationGain = featureInfo.informationGain;
+
+
+
+            foreach(string child in featureInfo.featureDistinctValueList)
+            {
+                DTreeNode childNode = new DTreeNode();
+                childNode.spliteFeatureValue = child;
+
+                List<string> preFeatures = currentNode.previousFeatures;
+                preFeatures.Add(currentNode.spliteFeatureName);
+                childNode.previousFeatures = preFeatures;
+
+                List<FeatureValuePair> featureValuePairs = currentNode.previousFeatureValues;
+                featureValuePairs.Add(new FeatureValuePair(currentNode.spliteFeatureName,childNode.spliteFeatureValue));
+                childNode.previousFeatureValues = featureValuePairs;
+
+                currentNode.childrenNodes.Add(childNode);
+            }
+
+            foreach (DTreeNode childNode in currentNode.childrenNodes)
+            {
+                generateTree(childNode);
+            }
+
+        }
+
+        private FeatureInfo GetSplitFeatureInfo(DTreeNode currentNode)
         {
             double maxInformationGain = -1000000;
             FeatureInfo featureinfo = null;

@@ -9,6 +9,7 @@ namespace DecisionTree.Data
     {
         private string[][] featureDataInstance;
         public string name;
+        public string className;
         public List<string> featureDistinctValueList = new List<string>();
         public double entropy;
         public double valueEntropy;
@@ -21,7 +22,6 @@ namespace DecisionTree.Data
         {
             this.featureDataInstance = dataInstance;
             this.name = featureName;
-            Execute();
         }
 
         public void Execute()
@@ -100,6 +100,10 @@ namespace DecisionTree.Data
                     double prob = ClassProbability(singleClassCount, totalClass);
                     entropy += - prob * Math.Log(prob, 2);
                 }
+            }
+            else
+            {
+                this.className = classList[0];
             }
             return entropy;
         }
