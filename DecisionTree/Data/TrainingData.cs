@@ -64,36 +64,21 @@ namespace DecisionTree.Data
             
         }
 
-/*        // store only the feature names in a list
-        // remove the class name
-        private void StoreFeatureNames(string[] names)
-        {
-            foreach (string name in names) this.featureNames.Add(name);
-            this.featureNames.RemoveAt(featureNames.Count-1);
-            this.featureCount = featureNames.Count;
-        }
-
-        // return feature list except the input feature list
-        public List<string> GetFeatureList(List<string> previousFeatures)
-        {
-            return featureNames.Except(previousFeatures).ToList();
-        }*/
-
         // get data row using feature and feature data
-        public string[][] GetDataInstances(List<FeatureDataPair> featureValues)
+        public string[][] GetDataInstances(List<FeatureDataPair> featureDatas)
         {
             string[][] dataInstance = this.data;
-            foreach (FeatureDataPair featureValue in featureValues)
+            foreach (FeatureDataPair featureData in featureDatas)
             {
-                dataInstance = GetFeatureDataClass(featureValue, dataInstance);
+                dataInstance = GetFeatureDataClass(featureData, dataInstance);
             }
             return dataInstance;
         }
 
         // when get both feature name and feature value then return matched data row
-        private string[][] GetFeatureDataClass(FeatureDataPair featureValue, string[][] instances)
+        private string[][] GetFeatureDataClass(FeatureDataPair featureData, string[][] instances)
         {
-            int featureIndex = Array.IndexOf(instances[0], featureValue.featureName); 
+            int featureIndex = Array.IndexOf(instances[0], featureData.featureName); 
             List<string[]> filterInstance = new List<string[]>();
 
             // store feature name row
@@ -102,7 +87,7 @@ namespace DecisionTree.Data
             // store the data row matched with feature data
             for (int i = 1; i < instances.Length; i++)
             {
-                if (instances[i][featureIndex] == featureValue.featureValue) filterInstance.Add(instances[i]);
+                if (instances[i][featureIndex] == featureData.featureValue) filterInstance.Add(instances[i]);
             }
 
             return RemoveFeature(filterInstance, featureIndex).ToArray();
