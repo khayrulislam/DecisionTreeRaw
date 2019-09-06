@@ -4,10 +4,10 @@ using System.Text;
 
 namespace DecisionTree.Data
 {
-    public class FeatureValuePair
+    public class FeatureDataPair
     {
 
-        public FeatureValuePair(string featureName, string featureValue)
+        public FeatureDataPair(string featureName, string featureValue)
         {
             this.featureName = featureName;
             this.featureValue = featureValue;

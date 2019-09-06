@@ -34,20 +34,22 @@ namespace DecisionTree.Data
         //store training input data feature value and class result 
         public void StoreData(List<string[]> lines)
         {
-            StoreFeatureNames(lines[0]);
-            this.dataInstance = lines.Count - 1;
-            string[][] inputData = new string[this.dataInstance][];
-
-            for (int i = 1, j = 0; i < lines.Count ; i++ , j = 0)
+            //StoreFeatureNames(lines[0]);
+            this.dataInstance = lines.Count-1;
+            string[][] inputData = new string[this.dataInstance+1][];
+            int i = 0 ;
+            foreach(string[] dataRow in lines)
             {
-                inputData[i - 1] = new string[this.featureCount+1];
-                foreach (string word in lines[i]) inputData[i - 1][ j++] = word;
+                inputData[i] = dataRow;
+                i++;
             }
 
             this.data = inputData;
             StoreDistinctClasses();
         }
 
+
+        // store distinct class of the total data instance and count
         private void StoreDistinctClasses()
         {
             HashSet<string> classList = new HashSet<string>();
@@ -62,7 +64,7 @@ namespace DecisionTree.Data
             
         }
 
-        // store only the feature names in a list
+/*        // store only the feature names in a list
         // remove the class name
         private void StoreFeatureNames(string[] names)
         {
@@ -75,49 +77,49 @@ namespace DecisionTree.Data
         public List<string> GetFeatureList(List<string> previousFeatures)
         {
             return featureNames.Except(previousFeatures).ToList();
-        }
+        }*/
 
-        // return specific feature value list with their class
-        // takes input as feature name and feature value
-        // dataInstance are continiously changed on the featureVlaue
-        public string[][] GetDataInstances(List<FeatureValuePair> featureValues)
+        // get data row using feature and feature data
+        public string[][] GetDataInstances(List<FeatureDataPair> featureValues)
         {
             string[][] dataInstance = this.data;
-            foreach (FeatureValuePair featureValue in featureValues)
+            foreach (FeatureDataPair featureValue in featureValues)
             {
-                dataInstance = GetFeatureDataWithClass(featureValue, dataInstance);
+                dataInstance = GetFeatureDataClass(featureValue, dataInstance);
             }
             return dataInstance;
         }
+
         // when get both feature name and feature value then return matched data row
-        // for feature name return the feature value and class value
-        private string[][] GetFeatureDataWithClass(FeatureValuePair featureValue, string[][] istances)
+        private string[][] GetFeatureDataClass(FeatureDataPair featureValue, string[][] instances)
         {
-            int featureIndex = this.featureNames.IndexOf(featureValue.featureName);
-            string value = featureValue.featureValue;
+            int featureIndex = Array.IndexOf(instances[0], featureValue.featureName); 
             List<string[]> filterInstance = new List<string[]>();
 
-            if(value != null)
+            // store feature name row
+            filterInstance.Add(instances[0]);
+
+            // store the data row matched with feature data
+            for (int i = 1; i < instances.Length; i++)
             {
-                for(int i = 0; i < this.dataInstance; i++)
-                {
-                    if (istances[i][featureIndex] == value)
-                    {
-                        filterInstance.Add(istances[i]);
-                    }
-                }
-            }
-            else
-            {
-                foreach(string[] data in istances)
-                {
-                    filterInstance.Add(new string[2] { data[featureIndex], data[data.Length-1]});
-                }
+                if (instances[i][featureIndex] == featureValue.featureValue) filterInstance.Add(instances[i]);
             }
 
-            return filterInstance.ToArray();
+            return RemoveFeature(filterInstance, featureIndex).ToArray();
         }
 
 
+        // remove specific feature column;
+        private string[][] RemoveFeature(List<string[]> dataInstances, int featureIndex)
+        {
+            List<string[]> result = new List<string[]>();
+            foreach (string[] dataRow in dataInstances)
+            {
+                List<string> row = dataRow.ToList();
+                row.RemoveAt(featureIndex);
+                result.Add(row.ToArray()) ;
+            }
+            return result.ToArray();
+        }
     }
 }

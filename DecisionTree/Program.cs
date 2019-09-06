@@ -20,21 +20,21 @@ namespace DecisionTree
 
 
             DTreeGenerator dtg = new DTreeGenerator();
-            dtg.createDecisionTree();
+            //dtg.createDecisionTree();
 
 
-/*
-            foreach (string clas in td.distinctClasses)
-            Console.WriteLine(clas);
+            /*
+                        foreach (string clas in td.distinctClasses)
+                        Console.WriteLine(clas);
 
-            string[][] res = td.GetDataInstances(new List<FeatureValuePair>() { new FeatureValuePair("outlook","sunny"), new FeatureValuePair("temperature", null) });
+                        });
 
-            for (int i = 0; i < res.Length; i++)
-            {
-                for (int j = 0; j < res[i].Length; j++) Console.Write(res[i][j] + " ");
-                Console.WriteLine();
-            }*/
-
+                        for (int i = 0; i < res.Length; i++)
+                        {
+                            for (int j = 0; j < res[i].Length; j++) Console.Write(res[i][j] + " ");
+                            Console.WriteLine();
+                        }*/
+            string[][] res = td.GetDataInstances(new List<FeatureDataPair>() { new FeatureDataPair("outlook", "sunny") });
             //Console.WriteLine(td.GetFeatureList(new List<string>() { "temperature", "outlook", "humidity" })[0]) ;
         }
     }

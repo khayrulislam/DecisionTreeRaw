@@ -12,16 +12,19 @@ namespace DecisionTree.Data
         public double informationGain { get; set; }
         public List<DTreeNode> childrenNodes { get; set; }
         public List<string> previousFeatures { get; set; }
-        public List<FeatureValuePair> previousFeatureValues{ get; set; }
+        public List<FeatureDataPair> previousFeatureValues{ get; set; }
         public string className{ get; set; }
         public bool isLeaf { get; set; }
+
+        public int depth { get; set; }
 
         public DTreeNode()
         {
             this.isLeaf = false;
             this.previousFeatures = new List<string>();
-            this.previousFeatureValues = new List<FeatureValuePair>();
+            this.previousFeatureValues = new List<FeatureDataPair>();
             this.childrenNodes = new List<DTreeNode>();
+            this.depth = 0;
         }
     }
 }

@@ -5,36 +5,31 @@ using System.Text;
 
 namespace DecisionTree.Data
 {
-    public class FeatureInfo
+    public class FeatureComputation
     {
         private string[][] featureDataInstance;
-        public string name;
-        public string className;
-        public int featureRemainCount;
-        public List<string> featureDistinctValueList = new List<string>();
-        public Dictionary<string,string> featureValueClassMap = new Dictionary<string, string>();
-        public double entropy;
-        public double valueEntropy;
-        public double informationGain;
+
+        public Feature feature;
         private List<string> distinctClassList = new List<string>();
         private TrainingData trainingDataInstance = null;
 
 
-        public FeatureInfo(string featureName, string[][] dataInstance, int featureRemain)
+        public FeatureComputation(string featureName, string[][] dataInstance, int featureRemain)
         {
+            feature = new Feature();
             this.featureDataInstance = dataInstance;
-            this.name = featureName;
-            this.featureRemainCount = featureRemain;
+            this.feature.name = featureName;
+            this.feature.featureRemainCount = featureRemain;
         }
 
         public void Execute()
         {
             this.trainingDataInstance = TrainingData.GetTrainingDataInstance;
             this.distinctClassList = trainingDataInstance.distinctClasses;
-            this.featureDistinctValueList = GetDistinctFeatureValue();
-            this.entropy = calculateFeatureEntropy();
-            this.valueEntropy = calculateFeatureValueEntropy();
-            this.informationGain = this.entropy - this.valueEntropy;
+            this.feature.featureDistinctValueList = GetDistinctFeatureValue();
+            this.feature.entropy = calculateFeatureEntropy();
+            this.feature.valueEntropy = calculateFeatureValueEntropy();
+            this.feature.informationGain = this.feature.entropy - this.feature.valueEntropy;
             //if(this.featureRemainCount==1) 
         }
 
@@ -46,13 +41,13 @@ namespace DecisionTree.Data
             double factor, entropy = 0;
             List<string> classList = new List<string>();
             
-            foreach (string featureValue in this.featureDistinctValueList)
+            foreach (string featureValue in this.feature.featureDistinctValueList)
             {
                 foreach (string[] row in this.featureDataInstance)
                 {
                     if (row[0] == featureValue) classList.Add(row[row.Length - 1]);
                 }
-                if (this.featureRemainCount == 1) this.featureValueClassMap.Add(featureValue, GetClass(classList));
+                if (this.feature.featureRemainCount == 1) this.feature.featureValueClassMap.Add(featureValue, GetClass(classList));
 
                 factor = (double) classList.Count / this.featureDataInstance.Length;
                 entropy += factor * calculateEntropy(classList);
@@ -127,7 +122,7 @@ namespace DecisionTree.Data
             }
             else
             {
-                this.className = classList[0];
+                this.feature.className = classList[0];
             }
             return entropy;
         }
