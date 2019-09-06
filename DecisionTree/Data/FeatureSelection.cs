@@ -15,10 +15,10 @@ namespace DecisionTree.Data
         }
 
 
-        public Feature GetSplitingFeature(DTreeNode currentNode)
+        public DTreeNode GetSplitingFeature(DTreeNode currentNode)
         {
             double maxInformationGain = -1000000;
-            DTreeNode splitNode;
+            DTreeNode splitNode = null;
             string[][] currentOperationData = trainingDataInstance.GetDataInstances(currentNode.previousFeatureValues);
 
             List<string> featureList = GetFeatureList(currentOperationData[0]);
@@ -31,6 +31,14 @@ namespace DecisionTree.Data
                 featureData.RemoveAt(0);
                 node.ExecuteNode(featureData);
 
+                if (node.entropy == 0.0)
+                {
+                    splitNode = currentNode;
+                    splitNode.entropy = node.entropy;
+
+                    splitNode.className = node.className;
+                }
+
                 if(node.informationGain > maxInformationGain)
                 {
                     maxInformationGain = node.informationGain;
@@ -39,32 +47,7 @@ namespace DecisionTree.Data
 
             }
 
-
-
-
-
-
-/*
-            foreach (string featureName in remainFeatures)
-            {
-                *//*List<FeatureDataPair> featureDataPairs = new List<FeatureDataPair>(currentNode.previousFeatureValues) ;
-                featureDataPairs.Add(new FeatureDataPair(featureName, null));
-
-                string[][] dataInstances = trainingDataInstance.GetDataInstances(featureDataPairs);
-                featureDataPairs.Clear();
-*//*
-                FeatureComputation featureComp = new FeatureComputation(featureName, dataInstances, remainFeatures.Count);
-                featureComp.Execute();
-                Feature tempFeature = featureComp.feature;
-
-                if (tempFeature.informationGain > maxInformationGain)
-                {
-                    feature = tempFeature;
-                    maxInformationGain = tempFeature.informationGain;
-                }
-
-            }*/
-            return null;
+            return splitNode;
         }
 
         private List<string[]> GetFeatureData(string[][] currentOperationData, string featureName)

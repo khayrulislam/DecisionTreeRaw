@@ -28,57 +28,41 @@ namespace DecisionTree.Tree
         private static void generateTree(DTreeNode currentNode)
         {
             FeatureSelection featureSelection = new FeatureSelection();
-            Feature feature = featureSelection.GetSplitingFeature(currentNode);
+            DTreeNode splitNode = featureSelection.GetSplitingFeature(currentNode);
 
-            //FeatureComputation featureInfo = GetSplitFeatureInfo(currentNode);
-           // FeatureInfo featureInfo =  new FeatureInfo(null,null);
-            if (feature == null) return;
-            currentNode.entropy = feature.entropy;
+            Console.WriteLine(currentNode.spliteFeatureName);
+            if (splitNode == null) return;
+            currentNode.entropy = splitNode.entropy;
 
             if(currentNode.entropy == 0.0)
             {
-                currentNode.className = feature.className;
+                currentNode.className = splitNode.className;
                 currentNode.isLeaf = true;
                 return;
             }
            
-            currentNode.spliteFeatureName = feature.name;            
-            currentNode.informationGain = feature.informationGain;
+            currentNode.spliteFeatureName = splitNode.spliteFeatureName;            
+            currentNode.informationGain = splitNode.informationGain;
 
-            Console.WriteLine(currentNode.spliteFeatureName);
+            
 
-            foreach (string child in feature.featureDistinctValueList)
+
+            foreach(DTreeNode child in splitNode.childrenNodes)
             {
                 DTreeNode childNode = new DTreeNode();
-                childNode.spliteFeatureValue = child;
-
-                List<string> preFeatures = currentNode.previousFeatures.ToList();
-                preFeatures.Add(currentNode.spliteFeatureName);
-                childNode.previousFeatures = preFeatures;
+                childNode.spliteFeatureValue = child.spliteFeatureValue;
 
                 List<FeatureDataPair> featureValuePairs = currentNode.previousFeatureValues.ToList();
-                featureValuePairs.Add(new FeatureDataPair(currentNode.spliteFeatureName,childNode.spliteFeatureValue));
+                featureValuePairs.Add(new FeatureDataPair(currentNode.spliteFeatureName, childNode.spliteFeatureValue));
                 childNode.previousFeatureValues = featureValuePairs;
 
                 childNode.depth = currentNode.depth + 1;
 
                 currentNode.childrenNodes.Add(childNode);
-            }
 
-            /*if (featureInfo.featureRemainCount == 1)
-            {
-                foreach (DTreeNode childNode in currentNode.childrenNodes)
-                {
-                    childNode.isLeaf = true;
-                    childNode.className = featureInfo.featureValueClassMap[childNode.spliteFeatureName];
-                }
-                return;
-            }*/
-
-            foreach (DTreeNode childNode in currentNode.childrenNodes)
-            {
                 generateTree(childNode);
             }
+
 
         }
 /*

@@ -39,9 +39,11 @@ namespace DecisionTree.Data
             this.trainingDataInstance = TrainingData.GetTrainingDataInstance;
             this.distinctClassList = this.trainingDataInstance.distinctClasses;
             this.entropy = calculateEntropy();
-            // condition
-            double childEntropy = createChildNodesAndGetChildEntropy();
-            this.informationGain = this.entropy - childEntropy;
+            if(this.entropy != 0.0)
+            {
+                double childEntropy = createChildNodesAndGetChildEntropy();
+                this.informationGain = this.entropy - childEntropy;
+            }
         }
 
         private double createChildNodesAndGetChildEntropy()
