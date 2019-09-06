@@ -20,7 +20,7 @@ namespace DecisionTree
 
 
             DTreeGenerator dtg = new DTreeGenerator();
-            //dtg.createDecisionTree();
+            dtg.createDecisionTree();
 
 
             /*
@@ -34,7 +34,7 @@ namespace DecisionTree
                             for (int j = 0; j < res[i].Length; j++) Console.Write(res[i][j] + " ");
                             Console.WriteLine();
                         }*/
-            string[][] res = td.GetDataInstances(new List<FeatureDataPair>() { new FeatureDataPair("outlook", "sunny") });
+            //string[][] res = td.GetDataInstances(new List<FeatureDataPair>() { new FeatureDataPair("outlook", "sunny") });
             //Console.WriteLine(td.GetFeatureList(new List<string>() { "temperature", "outlook", "humidity" })[0]) ;
         }
     }

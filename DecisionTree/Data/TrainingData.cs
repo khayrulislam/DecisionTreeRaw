@@ -54,9 +54,9 @@ namespace DecisionTree.Data
         {
             HashSet<string> classList = new HashSet<string>();
 
-            foreach(string[] row in this.data)
+            for(int i=1;i<this.data.Length;i++)
             {
-                classList.Add(row[row.Length-1]);
+                classList.Add(this.data[i][this.data[i].Length-1]);
             }
 
             this.distinctClasses = classList.ToList();
