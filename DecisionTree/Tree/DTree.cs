@@ -44,11 +44,11 @@ namespace DecisionTree.Tree
             string value = currentNode.spliteFeatureValue != "" ? "(" + currentNode.spliteFeatureValue + ") " : "" ;
             string ans = currentNode.className !="" ? " " +currentNode.className : "" ;
 
-            Console.WriteLine(indent + "+-- "+ value + currentNode.spliteFeatureName + ans);
+            Console.WriteLine(indent + "+--"+ value + currentNode.spliteFeatureName + ans + currentNode.isLeaf);
             indent += last ? "   " : "|  ";
 
             for (int i = 0; i < currentNode.childrenNodes.Count; i++)
-    {
+            {
                 PrintTree(currentNode.childrenNodes[i], indent, i == currentNode.childrenNodes.Count - 1);
             }
         }
