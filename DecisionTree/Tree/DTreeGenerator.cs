@@ -10,19 +10,21 @@ namespace DecisionTree.Tree
     {
         private DTreeNode root;
         private TrainingData trainingDataInstance = null;
+        private DTree dTreeIstance = null;
         private List<string> distinctClassList = new List<string>();
         public DTreeGenerator()
         {
             root = new DTreeNode();
             trainingDataInstance = TrainingData.GetTrainingDataInstance;
+            dTreeIstance = DTree.GetDTreeInstance;
             //distinctClassList = trainingDataInstance.distinctClasses;
         }
 
         public void createDecisionTree()
         {
-            //Console.WriteLine(GetSplitFeatureInfo(this.root));
-
             generateTree(this.root);
+            dTreeIstance.Storeroot(this.root);
+            dTreeIstance.PrintDecisionTree();
         }
 
         private static void generateTree(DTreeNode currentNode)
@@ -30,7 +32,7 @@ namespace DecisionTree.Tree
             FeatureSelection featureSelection = new FeatureSelection();
             DTreeNode splitNode = featureSelection.GetSplitingFeature(currentNode);
 
-            Console.WriteLine(currentNode.spliteFeatureName);
+            //Console.WriteLine(currentNode.spliteFeatureName);
             if (splitNode == null) return;
             currentNode.entropy = splitNode.entropy;
 

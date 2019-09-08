@@ -36,9 +36,21 @@ namespace DecisionTree.Tree
         // print tree
         public void PrintDecisionTree()
         {
-
+            PrintTree(this.root,"",true);
         }
 
+        private void PrintTree(DTreeNode currentNode, string indent, bool last)
+        {
+            string value = currentNode.spliteFeatureValue != "" ? "(" + currentNode.spliteFeatureValue + ") " : "" ;
+            string ans = currentNode.className !="" ? " " +currentNode.className : "" ;
 
+            Console.WriteLine(indent + "+-- "+ value + currentNode.spliteFeatureName + ans);
+            indent += last ? "   " : "|  ";
+
+            for (int i = 0; i < currentNode.childrenNodes.Count; i++)
+    {
+                PrintTree(currentNode.childrenNodes[i], indent, i == currentNode.childrenNodes.Count - 1);
+            }
+        }
     }
 }
