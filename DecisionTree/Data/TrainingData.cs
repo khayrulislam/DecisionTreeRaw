@@ -9,7 +9,6 @@ namespace DecisionTree.Data
     {
 
         private List<string> featureNames = new List<string>();
-        private int featureCount;
         private int dataInstance;
         public int distinctClassCount;
         public List<string> distinctClasses = new List<string>();
