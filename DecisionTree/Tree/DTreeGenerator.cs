@@ -9,15 +9,11 @@ namespace DecisionTree.Tree
     public class DTreeGenerator
     {
         private DTreeNode root;
-        private TrainingData trainingDataInstance = null;
         private DTree dTreeIstance = null;
-        private List<string> distinctClassList = new List<string>();
         public DTreeGenerator()
         {
             root = new DTreeNode();
-            trainingDataInstance = TrainingData.GetTrainingDataInstance;
             dTreeIstance = DTree.GetDTreeInstance;
-            //distinctClassList = trainingDataInstance.distinctClasses;
         }
 
         public void createDecisionTree()
@@ -46,8 +42,6 @@ namespace DecisionTree.Tree
             currentNode.spliteFeatureName = splitNode.spliteFeatureName;            
             currentNode.informationGain = splitNode.informationGain;
 
-            
-
 
             foreach(DTreeNode child in splitNode.childrenNodes)
             {
@@ -67,39 +61,6 @@ namespace DecisionTree.Tree
 
 
         }
-/*
-        private FeatureComputation GetSplitFeatureInfo(DTreeNode currentNode)
-        {
-            double maxInformationGain = -1000000;
-            FeatureComputation featureinfo = null;
-
-            List<string> remainFeatures = trainingDataInstance.GetFeatureList(currentNode.previousFeatures);
-
-            foreach (string feature in remainFeatures)
-            {
-                List<FeatureDataPair> previousFeatureValueList = currentNode.previousFeatureValues;
-                previousFeatureValueList.Add(new FeatureDataPair(feature, null));
-                string[][] dataInstance = trainingDataInstance.GetDataInstances(previousFeatureValueList);
-                previousFeatureValueList.Clear();
-
-                FeatureComputation info = new FeatureComputation(feature, dataInstance,remainFeatures.Count);
-                info.Execute();
-
-                if(info.informationGain > maxInformationGain)
-                {
-                    featureinfo = info;
-                    maxInformationGain = info.informationGain;
-                }
-
-                //Console.WriteLine(feature+"  "+ calculateFeatureEntropy(dataInstance));
-                //Console.WriteLine(" feature value  "+ calculateFeatureValueEntropy(dataInstance));
-                //calculateFeatureEntropy(dataInstance);
-                //calculateFeatureValueEntropy(dataInstance);
-               
-            }
-            return featureinfo;
-        }*/
-
 
         
     }
