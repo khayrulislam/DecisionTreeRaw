@@ -33,7 +33,6 @@ namespace DecisionTree.Data
         //store training input data feature value and class result 
         public void StoreData(List<string[]> lines)
         {
-            //StoreFeatureNames(lines[0]);
             this.dataInstance = lines.Count-1;
             string[][] inputData = new string[this.dataInstance+1][];
             int i = 0 ;

@@ -13,8 +13,9 @@ namespace DecisionTree
             //Console.WriteLine("Hello World!");
             //Console.ReadLine();
 
-            TrainingDataReader reader = new TrainingDataReader();
-            reader.ReadDataFile(@"..\..\..\InputFile\training-weather.txt");
+            DataReader reader = new DataReader();
+            reader.ReadTrainingDataFile(@"..\..\..\InputFile\training-weather.txt");
+            reader.ReadTestDataFile(@"..\..\..\InputFile\test-weather.txt");
 
             TrainingData td = TrainingData.GetTrainingDataInstance;
 

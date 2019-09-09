@@ -40,7 +40,7 @@ namespace DecisionTree.Tree
             PrintTree(this.root,"",true);
         }
 
-        private void PrintTree(DTreeNode currentNode, string indent, bool last)
+        private static void PrintTree(DTreeNode currentNode, string indent, bool last)
         {
             string data = currentNode.spliteFeatureValue != null ? "--"+currentNode.spliteFeatureValue : "";
             string feature = currentNode.spliteFeatureName !=null ? "---[" + currentNode.spliteFeatureName + "]" : "";
@@ -54,6 +54,35 @@ namespace DecisionTree.Tree
             {
                 PrintTree(currentNode.childrenNodes[i], indent, i == currentNode.childrenNodes.Count - 1);
             }
+        }
+
+        public void TestExecute()
+        {
+            TestData testDataInstance = TestData.GetTestDataInstance;
+
+            List<Dictionary<string, string>> testList = testDataInstance.testDataList;
+
+            foreach(Dictionary<string, string> testInput in testList)
+            {
+                Console.WriteLine(TraverseDTree(this.root,testInput));
+            }
+        }
+
+        private static string TraverseDTree(DTreeNode currentNode, Dictionary<string, string> testInput)
+        {
+            if (currentNode.isLeaf)
+            {
+                return currentNode.className;
+            }
+            string feature = currentNode.spliteFeatureName;
+            string data = testInput[feature];
+            testInput.Remove(feature);
+
+            foreach(DTreeNode childNode in currentNode.childrenNodes)
+            {
+                if (childNode.spliteFeatureValue == data) return TraverseDTree(childNode,testInput);
+            }
+            return null;
         }
 
     }

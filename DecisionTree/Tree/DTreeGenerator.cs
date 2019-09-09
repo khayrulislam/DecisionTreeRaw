@@ -25,6 +25,7 @@ namespace DecisionTree.Tree
             generateTree(this.root);
             dTreeIstance.Storeroot(this.root);
             dTreeIstance.PrintDecisionTree();
+            dTreeIstance.TestExecute();
         }
 
         private static void generateTree(DTreeNode currentNode)
