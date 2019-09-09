@@ -30,6 +30,7 @@ namespace DecisionTree.Data
                 node.spliteFeatureName = featureData[0][0];
                 featureData.RemoveAt(0);
                 node.ExecuteNode(featureData);
+                node.clearDataList();
 
                 if (node.entropy == 0.0)
                 {
@@ -71,9 +72,5 @@ namespace DecisionTree.Data
             return list;
         }
 
-        /*private List<string> GetRemainingFeature(List<string> previousFeatures)
-        {
-            return this.trainingDataInstance.GetFeatureList(previousFeatures);
-        }*/
     }
 }

@@ -46,6 +46,13 @@ namespace DecisionTree.Data
             }
         }
 
+        public void clearDataList()
+        {
+            this.previousFeatures.Clear();
+            this.previousFeatureValues.Clear();
+            this.nodeDataInstance.Clear();
+        }
+
         private double createChildNodesAndGetChildEntropy()
         {
             List<string> featureData = GetDistinctFeatureData();

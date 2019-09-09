@@ -32,7 +32,6 @@ namespace DecisionTree.Tree
             FeatureSelection featureSelection = new FeatureSelection();
             DTreeNode splitNode = featureSelection.GetSplitingFeature(currentNode);
 
-            //Console.WriteLine(currentNode.spliteFeatureName);
             if (splitNode == null) return;
             currentNode.entropy = splitNode.entropy;
 
