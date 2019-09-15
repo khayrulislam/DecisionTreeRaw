@@ -45,8 +45,9 @@ namespace DecisionTree.Tree
             string data = currentNode.spliteFeatureValue != null ? "--"+currentNode.spliteFeatureValue : "";
             string feature = currentNode.spliteFeatureName !=null ? "---[" + currentNode.spliteFeatureName + "]" : "";
             string ans = currentNode.className != null ? "---("+currentNode.className+")" : "";
-
-            Console.WriteLine(indent + "+"+ data + feature + ans);
+            string entropy = currentNode.entropy != 0.0 ? "entropy=(" + currentNode.entropy + ")," : "";
+            string ig = currentNode.informationGain != 0.0? "igain=("+currentNode.informationGain+")" : "";
+            Console.WriteLine(indent + "+"+ data + feature + ans+ entropy + ig);
             indent += last ? " " : "|";
             for (int i = 0; i < data.Length+3; i++) indent += " ";
 
@@ -62,9 +63,14 @@ namespace DecisionTree.Tree
 
             List<Dictionary<string, string>> testList = testDataInstance.testDataList;
 
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Original     Prediction");
+
             foreach(Dictionary<string, string> testInput in testList)
             {
-                Console.WriteLine(TraverseDTree(this.root,testInput));
+                Console.WriteLine(testInput["Play"]+"             " +TraverseDTree(this.root,testInput));
             }
         }
 
